@@ -39,8 +39,7 @@ Interactive layer (live, on-demand from the Streamlit UI):
 > **Note:** the original vision doc shows agents 1–3 as parallel branches.
 > This is implemented as a **linear** LangGraph since each step's output is
 > independent and a linear graph is simpler to debug. True parallelism is a
-> natural next step if performance becomes a concern (see
-> [Future Work](#future-work)).
+> natural next step if performance becomes a concern
 
 ### Pipeline Agents (run once per uploaded dataset)
 
@@ -108,7 +107,7 @@ InsightFlow-AI/
 ├── app.py                      # Streamlit UI — pipeline + live chat + custom charts
 ├── config.py
 ├── requirements.txt
-├── .env.example
+├── .env
 │
 ├── agents/
 │   ├── cleaner.py
@@ -138,7 +137,6 @@ InsightFlow-AI/
 └── reports/                    # generated PDF reports
 ```
 
----
 
 ## Setup
 
