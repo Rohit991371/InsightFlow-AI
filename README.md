@@ -44,29 +44,29 @@ Interactive layer (live, on-demand from the Streamlit UI):
 
 ### Pipeline Agents (run once per uploaded dataset)
 
-| # | Agent | File | Responsibility |
-|---|-------|------|-----------------|
-| 1 | Data Cleaning | `agents/cleaner.py` | Missing values, duplicates, empty/near-empty columns, mistyped numeric-as-text columns |
-| 2 | Statistician | `agents/statistician.py` | Descriptive stats, correlation matrix, top categories, IQR-based outlier detection |
-| 3 | Visualization | `agents/visualizer.py` | Histograms, bar charts, pie chart, trend line, correlation heatmap — each tagged with `chart_metadata` describing what it plots |
-| 4 | Chart Explanation | `agents/chart_explainer.py` | For every chart: why it exists, variable definitions, what's compared, key observations, business interpretation, recommended actions |
-| 5 | Recommendation | `agents/recommender.py` | Proactively suggests up to 5 follow-up analyses (grounded in real correlations/outliers/trends), each with a ready-to-run chart request |
-| 6 | Business Analyst | `agents/analyst.py` | Translates technical findings into plain-language insights + recommendations |
-| 7 | Report Writer | `agents/report_writer.py` | Assembles everything — including interactive session content — into a polished PDF via ReportLab |
+| #   | Agent             | File                        | Responsibility                                                                                                                          |
+| --- | ----------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Data Cleaning     | `agents/cleaner.py`         | Missing values, duplicates, empty/near-empty columns, mistyped numeric-as-text columns                                                  |
+| 2   | Statistician      | `agents/statistician.py`    | Descriptive stats, correlation matrix, top categories, IQR-based outlier detection                                                      |
+| 3   | Visualization     | `agents/visualizer.py`      | Histograms, bar charts, pie chart, trend line, correlation heatmap — each tagged with `chart_metadata` describing what it plots         |
+| 4   | Chart Explanation | `agents/chart_explainer.py` | For every chart: why it exists, variable definitions, what's compared, key observations, business interpretation, recommended actions   |
+| 5   | Recommendation    | `agents/recommender.py`     | Proactively suggests up to 5 follow-up analyses (grounded in real correlations/outliers/trends), each with a ready-to-run chart request |
+| 6   | Business Analyst  | `agents/analyst.py`         | Translates technical findings into plain-language insights + recommendations                                                            |
+| 7   | Report Writer     | `agents/report_writer.py`   | Assembles everything — including interactive session content — into a polished PDF via ReportLab                                        |
 
 ### Interactive Agents (live, on-demand)
 
-| Agent | File | Responsibility |
-|-------|------|-----------------|
+| Agent                 | File                              | Responsibility                                                                                                                                                                                                 |
+| --------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Interactive Analytics | `agents/interactive_analytics.py` | Parses a natural-language chart request (LLM or rule-based) into a structured spec, validates columns with fuzzy-match suggestions, renders the chart (scatter, line, bar, histogram, pie, box, heatmap, area) |
-| Dataset Chat | `agents/dataset_chat.py` | Answers natural-language questions by generating a single pandas expression, executing it through a sandboxed evaluator, and explaining the result in business language |
+| Dataset Chat          | `agents/dataset_chat.py`          | Answers natural-language questions by generating a single pandas expression, executing it through a sandboxed evaluator, and explaining the result in business language                                        |
 
 ### Supporting Infrastructure
 
-| File | Responsibility |
-|------|-----------------|
-| `utils/llm_client.py` | Shared Groq call wrapper — JSON parsing, markdown-fence stripping, consistent `LLMUnavailableError` handling across every agent that uses an LLM |
-| `utils/sandbox.py` | Restricted execution environment for LLM-generated pandas expressions (Dataset Chat Agent) — see [Security](#security-llm-generated-code-execution) below |
+| File                  | Responsibility                                                                                                                                            |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `utils/llm_client.py` | Shared Groq call wrapper — JSON parsing, markdown-fence stripping, consistent `LLMUnavailableError` handling across every agent that uses an LLM          |
+| `utils/sandbox.py`    | Restricted execution environment for LLM-generated pandas expressions (Dataset Chat Agent) — see [Security](#security-llm-generated-code-execution) below |
 
 ---
 
@@ -78,7 +78,7 @@ answers a user's question, then runs it against the real dataframe. This is
 `utils/sandbox.py` enforces:
 
 - **`eval()`, not `exec()`** — the LLM is only ever asked for a single
-  *expression*, not a script. This makes statements, imports, assignments,
+  _expression_, not a script. This makes statements, imports, assignments,
   loops, and `def`/`class` syntactically impossible from the start.
 - **AST validation before execution** — the parsed expression is walked and
   rejected if it references any name outside an explicit allowlist
@@ -146,14 +146,14 @@ InsightFlow-AI/
 # 1. Clone / enter the project directory
 cd InsightFlow-AI
 
-# 2. Create a virtual environment (recommended)
+# 2. Create a virtual environment
 python3 -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate
 
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. (Optional) Configure your Groq API key for LLM-powered insights,
+# 4. (Optional) Configure Groq API key for LLM-powered insights,
 #    explanations, recommendations, custom charts, and chat
 cp .env.example .env
 # then edit .env and paste your key from https://console.groq.com
@@ -187,62 +187,16 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
 
 ---
 
-## Running the Pipeline Programmatically
-
-```python
-import pandas as pd
-from workflow.graph import run_pipeline
-
-df = pd.read_csv("uploads/sales.csv")
-result = run_pipeline(df, dataset_name="sales.csv")
-
-print(result["business_insights"]["executive_summary"])
-print(result["recommendations"]["recommendations"])  # proactive analysis suggestions
-print(result["report_path"])  # path to generated PDF
-```
-
-The returned `result` dict contains every agent's output: `dataset_info`,
-`cleaning_report`, `stats_report`, `charts` (including `chart_metadata`),
-`chart_explanations`, `recommendations`, `business_insights`, and
-`report_path`.
-
-To use the interactive agents outside Streamlit:
-
-```python
-from agents.interactive_analytics import run_interactive_analytics_agent
-from agents.dataset_chat import run_dataset_chat_agent
-
-chart = run_interactive_analytics_agent("scatter plot between age and salary", df)
-answer = run_dataset_chat_agent("Which product generated the highest revenue?", df)
-```
-
----
-
-## Running Tests
-
-```bash
-pip install pytest   # already in requirements.txt
-pytest tests/ -v
-```
-
-44 tests cover the data loader, every agent individually (including the four
-new Enhancement Phase agents), the sandbox's security boundary against a set
-of real exploit payloads, PDF generation with and without interactive
-content, the fallback path when no Groq key is set, and full end-to-end
-pipeline runs on both a messy and a minimal dataset.
-
----
-
 ## Tech Stack
 
-| Layer | Choice |
-|---|---|
-| Frontend | Streamlit |
-| Orchestration | LangGraph |
-| LLM | Groq — Llama 3.3 70B (free tier) |
-| Analytics | Pandas, NumPy |
-| Visualization | Matplotlib, Seaborn |
-| Report | ReportLab |
+| Layer                | Choice                                                                           |
+| -------------------- | -------------------------------------------------------------------------------- |
+| Frontend             | Streamlit                                                                        |
+| Orchestration        | LangGraph                                                                        |
+| LLM                  | Groq — Llama 3.3 70B (free tier)                                                 |
+| Analytics            | Pandas, NumPy                                                                    |
+| Visualization        | Matplotlib, Seaborn                                                              |
+| Report               | ReportLab                                                                        |
 | Conversational layer | Sandboxed pandas-expression evaluation (custom, not a 3rd-party agent framework) |
 
 ---
@@ -270,13 +224,3 @@ pipeline runs on both a messy and a minimal dataset.
 - **Recommendation Agent avoids duplicates** by checking already-generated
   chart metadata before suggesting new analyses, in both the LLM and
   rule-based paths.
-
-## Future Work
-
-- True parallel branching in LangGraph for independent pipeline steps
-- Forecasting agent (e.g. simple trend extrapolation or Prophet)
-- Multi-file / multi-sheet Excel support
-- Persist chat/custom-chart history across page reloads (currently
-  session-scoped only)
-- Caching layer so re-running on the same file skips redundant agent calls
-- Auth + per-user upload history if deployed beyond local/demo use
