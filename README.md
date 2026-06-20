@@ -186,51 +186,6 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
    Report** — the PDF includes everything generated during the session
 
 ---
-
-## Running the Pipeline Programmatically
-
-```python
-import pandas as pd
-from workflow.graph import run_pipeline
-
-df = pd.read_csv("uploads/sales.csv")
-result = run_pipeline(df, dataset_name="sales.csv")
-
-print(result["business_insights"]["executive_summary"])
-print(result["recommendations"]["recommendations"])  # proactive analysis suggestions
-print(result["report_path"])  # path to generated PDF
-```
-
-The returned `result` dict contains every agent's output: `dataset_info`,
-`cleaning_report`, `stats_report`, `charts` (including `chart_metadata`),
-`chart_explanations`, `recommendations`, `business_insights`, and
-`report_path`.
-
-To use the interactive agents outside Streamlit:
-
-```python
-from agents.interactive_analytics import run_interactive_analytics_agent
-from agents.dataset_chat import run_dataset_chat_agent
-
-chart = run_interactive_analytics_agent("scatter plot between age and salary", df)
-answer = run_dataset_chat_agent("Which product generated the highest revenue?", df)
-```
-
----
-
-## Running Tests
-
-```bash
-pip install pytest   # already in requirements.txt
-pytest tests/ -v
-```
-
-44 tests cover the data loader, every agent individually (including the four
-new Enhancement Phase agents), the sandbox's security boundary against a set
-of real exploit payloads, PDF generation with and without interactive
-content, the fallback path when no Groq key is set, and full end-to-end
-pipeline runs on both a messy and a minimal dataset.
-
 ---
 
 ## Tech Stack
@@ -271,12 +226,6 @@ pipeline runs on both a messy and a minimal dataset.
   chart metadata before suggesting new analyses, in both the LLM and
   rule-based paths.
 
-## Future Work
 
-- True parallel branching in LangGraph for independent pipeline steps
-- Forecasting agent (e.g. simple trend extrapolation or Prophet)
-- Multi-file / multi-sheet Excel support
-- Persist chat/custom-chart history across page reloads (currently
-  session-scoped only)
 - Caching layer so re-running on the same file skips redundant agent calls
 - Auth + per-user upload history if deployed beyond local/demo use
