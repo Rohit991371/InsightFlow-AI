@@ -225,7 +225,3 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
 - **Recommendation Agent avoids duplicates** by checking already-generated
   chart metadata before suggesting new analyses, in both the LLM and
   rule-based paths.
-
-
-- Caching layer so re-running on the same file skips redundant agent calls
-- Auth + per-user upload history if deployed beyond local/demo use
