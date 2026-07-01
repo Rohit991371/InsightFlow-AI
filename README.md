@@ -1,4 +1,4 @@
-# InsightFlow AI
+# InsightFlow AI [https://insightflow-ai-gvrdyhnn2vpt8pufea2waa.streamlit.app/]
 
 **Autonomous Multi-Agent Data Analyst → AI Analytics Consultant**
 
@@ -39,8 +39,7 @@ Interactive layer (live, on-demand from the Streamlit UI):
 > **Note:** the original vision doc shows agents 1–3 as parallel branches.
 > This is implemented as a **linear** LangGraph since each step's output is
 > independent and a linear graph is simpler to debug. True parallelism is a
-> natural next step if performance becomes a concern (see
-> [Future Work](#future-work)).
+> natural next step if performance becomes a concern
 
 ### Pipeline Agents (run once per uploaded dataset)
 
@@ -108,7 +107,7 @@ InsightFlow-AI/
 ├── app.py                      # Streamlit UI — pipeline + live chat + custom charts
 ├── config.py
 ├── requirements.txt
-├── .env.example
+├── .env
 │
 ├── agents/
 │   ├── cleaner.py
@@ -138,7 +137,6 @@ InsightFlow-AI/
 └── reports/                    # generated PDF reports
 ```
 
----
 
 ## Setup
 
@@ -186,6 +184,10 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
    Report** — the PDF includes everything generated during the session
 
 ---
+<<<<<<< HEAD
+=======
+---
+>>>>>>> 94c220ec77bac4c1d67c5313fa4fd79a55b225b9
 
 ## Tech Stack
 
@@ -193,7 +195,7 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
 | -------------------- | -------------------------------------------------------------------------------- |
 | Frontend             | Streamlit                                                                        |
 | Orchestration        | LangGraph                                                                        |
-| LLM                  | Groq — Llama 3.3 70B (free tier)                                                 |
+| LLM                  | Groq — openai/gpt-oss-20b (free tier)                                                 |
 | Analytics            | Pandas, NumPy                                                                    |
 | Visualization        | Matplotlib, Seaborn                                                              |
 | Report               | ReportLab                                                                        |

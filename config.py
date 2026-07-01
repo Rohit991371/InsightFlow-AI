@@ -23,7 +23,7 @@ for _dir in (UPLOADS_DIR, CHARTS_DIR, REPORTS_DIR):
 # LLM settings (Groq - free tier, Llama 3.3 70B)
 # ---------------------------------------------------------------------------
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-20b")
 LLM_TEMPERATURE = 0.3
 LLM_MAX_TOKENS = 1024
 
