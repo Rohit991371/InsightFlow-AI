@@ -195,7 +195,7 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
 | -------------------- | -------------------------------------------------------------------------------- |
 | Frontend             | Streamlit                                                                        |
 | Orchestration        | LangGraph                                                                        |
-| LLM                  | Groq — openai/gpt-oss-20b (free tier)                                                 |
+| LLM                  | Groq — openai/gpt-oss- (free tier)                                                 |
 | Analytics            | Pandas, NumPy                                                                    |
 | Visualization        | Matplotlib, Seaborn                                                              |
 | Report               | ReportLab                                                                        |
