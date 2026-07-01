@@ -10,7 +10,7 @@ data analysis expertise required.
 
 Built with **LangGraph** orchestrating seven specialized agents in a linear
 pipeline, plus two on-demand interactive agents driven from the Streamlit UI,
-with **Groq (Llama 3.3 70B, free tier)** powering every language/reasoning
+with **Groq (openai/gpt-oss-20b, free tier)** powering every language/reasoning
 step and clean deterministic fallbacks everywhere so the app still works
 fully without an API key.
 
@@ -185,6 +185,10 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
 
 ---
 ---
+<<<<<<< HEAD
+=======
+---
+>>>>>>> 94c220ec77bac4c1d67c5313fa4fd79a55b225b9
 
 ## Tech Stack
 
@@ -192,7 +196,7 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
 | -------------------- | -------------------------------------------------------------------------------- |
 | Frontend             | Streamlit                                                                        |
 | Orchestration        | LangGraph                                                                        |
-| LLM                  | Groq — Llama 3.3 70B (free tier)                                                 |
+| LLM                  | Groq — openai/gpt-oss-20b (free tier)                                                 |
 | Analytics            | Pandas, NumPy                                                                    |
 | Visualization        | Matplotlib, Seaborn                                                              |
 | Report               | ReportLab                                                                        |
