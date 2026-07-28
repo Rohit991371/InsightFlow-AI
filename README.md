@@ -182,11 +182,6 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
    Report** — the PDF includes everything generated during the session
 
 ---
----
-<<<<<<< HEAD
-=======
----
->>>>>>> 94c220ec77bac4c1d67c5313fa4fd79a55b225b9
 
 ## Tech Stack
 
