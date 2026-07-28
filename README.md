@@ -164,11 +164,9 @@ cp .env.example .env
 > `"source": "fallback_template"` or `"source": "rule_based"` flag instead
 > of `"source": "llm"` in the relevant output.
 
----
-
 ## Running the App
 
-```bash
+```
 streamlit run app.py
 ```
 
