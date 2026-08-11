@@ -1,0 +1,22 @@
+services:
+  insightflow-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: insightflow-ai:latest
+    container_name: insightflow-ai
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads
+      - ./charts:/app/charts
+      - ./reports:/app/reports
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3

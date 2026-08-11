@@ -184,11 +184,54 @@ Then open the local URL Streamlit prints (usually `http://localhost:8501`):
    Report** — the PDF includes everything generated during the session
 
 ---
+
+## Running with Docker
+
+### Prerequisites
+- Docker and Docker Compose installed
+- A `.env` file in the project root (copy from `.env.example`) — the Groq
+  API key is optional; the app works fully with rule-based fallbacks if
+  it's missing
+
+### Build and run
+```bash
+# 1. Clone the repo
+git clone https://github.com/Rohit991371/InsightFlow-AI.git
+cd InsightFlow-AI
+
+# 2. Set up environment variables
+cp .env.example .env
+# edit .env and add your GROQ_API_KEY if you have one
+
+# 3. Build and start the container
+docker compose up --build
+```
+
+Open **http://localhost:8501** in your browser.
+
+`uploads/`, `charts/`, and `reports/` are mounted as volumes, so files
+generated inside the container persist on your host machine and survive
+container restarts.
+
+### Useful commands
+```bash
+docker compose up -d          # run in background
+docker compose logs -f        # tail logs
+docker compose down           # stop and remove the container
+docker compose up --build     # rebuild after code/dependency changes
+```
+
+### Running without Compose (plain Docker)
+```bash
+docker build -t insightflow-ai .
+docker run -p 8501:8501 --env-file .env \
+  -v $(pwd)/uploads:/app/uploads \
+  -v $(pwd)/charts:/app/charts \
+  -v $(pwd)/reports:/app/reports \
+  insightflow-ai
+```
+
 ---
-<<<<<<< HEAD
-=======
----
->>>>>>> 94c220ec77bac4c1d67c5313fa4fd79a55b225b9
 
 ## Tech Stack
 

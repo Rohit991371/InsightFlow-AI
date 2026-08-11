@@ -1,0 +1,28 @@
+# Version control / env
+.git
+.gitignore
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Runtime output (mounted as volumes instead)
+uploads/*
+!uploads/.gitkeep
+charts/*
+!charts/.gitkeep
+reports/*
+!reports/.gitkeep
+
+# Misc
+tests/
+*.mp4
+.pytest_cache/
+.vscode/
+.idea/
+README.md
