@@ -17,7 +17,8 @@ from typing import Optional
 
 from groq import Groq
 
-DEFAULT_MODEL = "llama-3.3-70b-versatile"
+# DEFAULT_MODEL = "llama-3.3-70b-versatile"
+DEFAULT_MODEL = "openai/gpt-oss-20b"
 
 
 class LLMUnavailableError(Exception):
